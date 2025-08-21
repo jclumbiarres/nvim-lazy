@@ -123,6 +123,7 @@ return {
       })
 
       -- Other language servers
+      -- Other language servers
       local servers = { "pyright", "rust_analyzer" }
       for _, server in ipairs(servers) do
         lspconfig[server].setup({
@@ -130,6 +131,16 @@ return {
           on_attach = on_attach
         })
       end
+
+      -- a-ha/templ LSP
+      lspconfig.templ.setup({
+        cmd = { "templ", "lsp" },
+        filetypes = { "templ" },
+        root_dir = require("lspconfig").util.root_pattern(".git", "."),
+        init_options = {},
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
     end,
   },
 }

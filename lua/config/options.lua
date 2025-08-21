@@ -82,14 +82,14 @@ opt.completeopt = { "menuone", "noselect" }
 
 -- Whitespace characters
 opt.list = true
-opt.listchars = {
-  tab = "→ ",
-  eol = "↲",
-  nbsp = "␣",
-  trail = "•",
-  extends = "⟩",
-  precedes = "⟨",
-}
+-- opt.listchars = {
+--   tab = "→ ",
+--   eol = "↲",
+--   nbsp = "␣",
+--   trail = "•",
+--   extends = "⟩",
+--   precedes = "⟨",
+-- }
 
 -- Desactivar providers innecesarios
 vim.g.loaded_python3_provider = 0

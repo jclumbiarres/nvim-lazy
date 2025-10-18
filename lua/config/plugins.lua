@@ -19,6 +19,7 @@ local specs = {
     require("config.plugins.noice"),
     require("config.plugins.notify"),
     require("config.plugins.orgmode"),
+    require("config.plugins.tmux"),
 }
 
 require("lazy").setup(specs, {

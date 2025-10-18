@@ -81,7 +81,7 @@ opt.foldenable = false
 opt.completeopt = { "menuone", "noselect" }
 
 -- Whitespace characters
-opt.list = true
+-- opt.list = true
 -- opt.listchars = {
 --   tab = "→ ",
 --   eol = "↲",

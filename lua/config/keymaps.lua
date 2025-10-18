@@ -94,3 +94,18 @@ end, opts)
 -- Salir de Neovim
 keymap("n", "<leader>q", "<cmd>q<cr>", opts)
 keymap("n", "<leader>Q", "<cmd>qa!<cr>", opts)
+
+-- Tmux terminal
+vim.keymap.set("n", "<leader>t", function()
+  if os.getenv("TMUX") then
+    os.execute("tmux split-window -v -p 20")
+  else
+    print("No estás dentro de tmux.")
+  end
+end, { desc = "Abrir panel inferior con terminal (tmux 20%)" })
+vim.g.tmux_navigator_no_mappings = 1
+
+vim.keymap.set("n", "<C-h>", ":TmuxNavigateLeft<CR>", { silent = true })
+vim.keymap.set("n", "<C-j>", ":TmuxNavigateDown<CR>", { silent = true })
+vim.keymap.set("n", "<C-k>", ":TmuxNavigateUp<CR>", { silent = true })
+vim.keymap.set("n", "<C-l>", ":TmuxNavigateRight<CR>", { silent = true })

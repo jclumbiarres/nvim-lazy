@@ -98,3 +98,9 @@
 - `<leader>on` — Abrir notas org (`~/org/notes.org`)
 - `<leader>ox` — Org Tangle: exportar bloques de código a archivo
 - `<leader>oe` — Ejecutar archivo tanglado (último exportado)
+
+## TMUX 
+
+* `<leader>t` - Abre una terminal en horizontal abajo con un 20% de la pantalla
+
+La navegación entre ventanas se usa con los mismos keymaps de neovim.

@@ -1,11 +1,8 @@
--- Configuración específica para Go LSP (gopls)
+-- go.lua - Configuración específica y completa para Go LSP (gopls)
 return {
   "neovim/nvim-lspconfig",
   ft = { "go", "gomod", "gowork", "gotmpl" },
   config = function()
-    local lspconfig = require("lspconfig")
-    local util = require("lspconfig.util")
-
     -- Función on_attach específica para Go
     local function go_on_attach(client, bufnr)
       -- Configuración básica de LSP
@@ -25,8 +22,8 @@ return {
       vim.keymap.set("n", "<leader>lf", function()
         vim.lsp.buf.format({
           async = true,
-          filter = function(client)
-            return client.name == "gopls"
+          filter = function(c)
+            return c.name == "gopls"
           end
         })
       end, opts)
@@ -54,8 +51,8 @@ return {
           -- Formatear
           vim.lsp.buf.format({
             async = false,
-            filter = function(client)
-              return client.name == "gopls"
+            filter = function(c)
+              return c.name == "gopls"
             end
           })
         end,
@@ -81,13 +78,13 @@ return {
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-    -- Configuración de gopls
-    lspconfig.gopls.setup({
-      on_attach = go_on_attach,
-      capabilities = capabilities,
+    -- Configuración completa de gopls usando la nueva API
+    vim.lsp.config.gopls = {
       cmd = { "gopls" },
       filetypes = { "go", "gomod", "gowork", "gotmpl" },
-      root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+      root_markers = { "go.work", "go.mod", ".git" },
+      capabilities = capabilities,
+      on_attach = go_on_attach,
       settings = {
         gopls = {
           -- Análisis estático
@@ -180,12 +177,10 @@ return {
         completeUnimported = true,
         staticcheck = true,
       },
+    }
 
-      -- Configuración de flags
-      flags = {
-        debounce_text_changes = 500,
-      },
-    })
+    -- Habilitar el servidor gopls
+    vim.lsp.enable("gopls")
 
     -- Auto-comandos adicionales para Go
     local augroup = vim.api.nvim_create_augroup("GoLSP", { clear = true })

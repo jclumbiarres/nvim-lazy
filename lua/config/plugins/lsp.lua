@@ -1,3 +1,4 @@
+-- lsp.lua - Configuración general de LSP (SIN gopls)
 return {
   {
     "williamboman/mason.nvim",
@@ -33,7 +34,6 @@ return {
       "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       local on_attach = function(client, bufnr)
@@ -52,7 +52,10 @@ return {
       end
 
       -- Configure Lua LSP
-      lspconfig.lua_ls.setup({
+      vim.lsp.config.lua_ls = {
+        cmd = { "lua-language-server" },
+        filetypes = { "lua" },
+        root_markers = { ".luarc.json", ".luarc.jsonc", ".luacheckrc", ".stylua.toml", "stylua.toml", "selene.toml", "selene.yml", ".git" },
         capabilities = capabilities,
         on_attach = on_attach,
         settings = {
@@ -65,10 +68,13 @@ return {
             telemetry = { enable = false }
           }
         }
-      })
+      }
 
       -- Configure TypeScript LSP (ts_ls)
-      lspconfig.ts_ls.setup({
+      vim.lsp.config.ts_ls = {
+        cmd = { "typescript-language-server", "--stdio" },
+        filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+        root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
         capabilities = capabilities,
         on_attach = function(client, bufnr)
           on_attach(client, bufnr)
@@ -105,42 +111,28 @@ return {
             },
           },
         },
-      })
+      }
 
-      -- Configure Go LSP (gopls)
-      lspconfig.gopls.setup({
+      -- Configure Rust LSP (rust_analyzer)
+      vim.lsp.config.rust_analyzer = {
+        cmd = { "rust-analyzer" },
+        filetypes = { "rust" },
+        root_markers = { "Cargo.toml", "rust-project.json", ".git" },
         capabilities = capabilities,
         on_attach = on_attach,
-        settings = {
-          gopls = {
-            analyses = {
-              unusedparams = true,
-            },
-            staticcheck = true,
-            gofumpt = true,
-          },
-        },
-      })
+      }
 
-      -- Other language servers
-      -- Other language servers
-      local servers = { "pyright", "rust_analyzer" }
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({
-          capabilities = capabilities,
-          on_attach = on_attach
-        })
-      end
-
-      -- a-ha/templ LSP
-      lspconfig.templ.setup({
+      -- Configure templ LSP
+      vim.lsp.config.templ = {
         cmd = { "templ", "lsp" },
         filetypes = { "templ" },
-        root_dir = require("lspconfig").util.root_pattern(".git", "."),
-        init_options = {},
+        root_markers = { ".git" },
         capabilities = capabilities,
         on_attach = on_attach,
-      })
+      }
+
+      -- Enable LSP servers (SIN gopls - se configura en go.lua)
+      vim.lsp.enable({ "lua_ls", "ts_ls", "rust_analyzer", "templ" })
     end,
   },
 }
